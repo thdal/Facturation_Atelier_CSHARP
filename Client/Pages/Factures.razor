@@ -1,0 +1,17 @@
+﻿@page "/Factures"
+
+@using Facturations.Shared
+
+@inject IBusinessData data
+
+<h3>Factures</h3>
+<ul>
+    @foreach (var facture in data.Factures){
+        <li>@facture.NumeroFacture</li>
+    
+    }
+
+</ul>
+@code {
+
+}
