@@ -4,14 +4,65 @@
 
 @inject IBusinessData data
 
-<h3>Factures</h3>
-<ul>
-    @foreach (var facture in data.Factures){
-        <li>@facture.NumeroFacture</li>
-    
-    }
+<link href="app.css" rel="stylesheet" />
 
-</ul>
+<h1>Factures</h1>
+
+<p>Ce composant affiche des factures.</p>
+
+<table id="customers">
+    <thead>
+        <tr>
+            <th>N° de facture</th>
+            <th>Client</th>
+            <th>Date d'émission</th>
+            <th>Date de réglement</th>
+            <th>Montant dû</th>
+            <th>Montant réglé</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var facture in data.Factures)
+        {
+            <tr>
+                <td>@facture.NumeroFacture</td>
+                <td>@facture.Client</td>
+                <td>@facture.DateEmission.ToString("dd/MM/yyyy")</td>
+                <td>@facture.DateReglement.ToString("dd/MM/yyyy")</td>
+                <td>@facture.MontantDu €</td>
+                <td>@facture.MontantRegle €</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<div class="div-CA"><span>Chiffre d'affaire : </span>@calculCA() €</div>
+
+<div class="div-CA"><span>Chiffre d'affaire attendu : </span>@calculCaAttendu() €</div>
+
+
 @code {
 
+    public int calculCA()
+    {
+        int chiffreA = 0;
+        foreach (var facture in data.Factures)
+        {
+            chiffreA += facture.MontantRegle;
+
+        }
+        return chiffreA;
+    }
+
+    public int calculCaAttendu()
+    {
+        int chiffreAttendu = 0;
+        foreach (var facture in data.Factures)
+        {
+            chiffreAttendu += facture.MontantDu;
+        }
+
+        return chiffreAttendu;
+    }
 }
