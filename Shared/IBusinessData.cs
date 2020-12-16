@@ -8,7 +8,13 @@ namespace Facturations.Shared
 {
     public interface IBusinessData
     {
-        IEnumerable<Facture> Factures { get; }
+        IEnumerable<Facture> AllFactures { get; }
+
+        void ajouterFacture(Facture facture);
+
+        decimal SalesRevenue { get; }
+
+        decimal Outstanding { get; }
 
     }
 }

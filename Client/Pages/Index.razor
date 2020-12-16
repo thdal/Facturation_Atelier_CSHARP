@@ -1,7 +1,33 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+@inject HttpClient http
 
-Welcome to your new app.
+<h1>Service de facturation</h1><br />
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<h2>Bienvenue.</h2>   
+
+@if(allMontants != null)
+{
+    <div class="div-CA">
+        @foreach (var montant in allMontants)
+        {
+            <span class="span-CA">@montant.Key :  @montant.Value €</span>
+            <br>
+        }
+    </div>
+}
+else
+{
+
+}
+@code{
+
+    private Dictionary<string, string> allMontants = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        allMontants = await http.GetFromJsonAsync<Dictionary<string, string>>("api/Dashboard");
+
+    }
+}

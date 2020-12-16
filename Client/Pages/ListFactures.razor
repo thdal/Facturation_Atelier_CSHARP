@@ -1,0 +1,101 @@
+﻿@page "/factures"
+
+@inject HttpClient http
+
+<h1>Factures</h1>
+
+@if (allFactures == null)
+{
+    <p>Interrogation du serveur...</p>
+}
+else
+{
+    <table id="customers">
+        <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Paid</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var invoice in allFactures)
+            {
+                <tr class='table-@ColorFromInvoiceState(invoice)'>
+                    <td>@invoice.NumeroFacture</td>
+                    <td>@invoice.Created.ToShortDateString()</td>
+                    <td>@invoice.Customer</td>
+                    <td align="right">@invoice.Amount.ToString("€ 0.00")</td>
+                    <td align="right">@invoice.Paid.ToString("€ 0.00")</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="div-CA">
+
+        @foreach (var montant in allMontants)
+        {
+            <span class="span-CA">@montant.Key :  @montant.Value €</span>
+            <br>
+        }
+    </div>
+
+
+    <h2>Ajouter une facture :</h2>
+    <br />
+
+    <EditForm Model="facture" OnValidSubmit="@postData">
+        <ValidationSummary />
+        <DataAnnotationsValidator />
+        <label>
+            Numéro de facture :
+        </label>
+        <br>
+        <InputText id="numFacture" @bind-Value="facture.NumeroFacture"></InputText>
+        <br>
+        <label>
+            Client :
+        </label>
+        <br>
+        <InputText id="Customer" @bind-Value="facture.Customer"></InputText>
+        <br>
+        <label>
+            Montant de la facture :
+        </label><br>
+        <InputNumber id="Amount" @bind-Value="facture.Amount"></InputNumber><br />
+        <button class="btn-submit" type="submit">Submit</button>
+    </EditForm>
+
+}
+@code {
+
+    static string ColorFromInvoiceState(Facture invoice)
+    {
+        return "";
+    }
+
+    private Facture facture = new Facture();
+
+    private IEnumerable<Facture> allFactures = null;
+
+    private Dictionary<string, string> allMontants = null;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        allFactures = await http.GetFromJsonAsync<IEnumerable<Facture>>("api/Factures");
+
+        allMontants = await http.GetFromJsonAsync<Dictionary<string, string>>("api/Dashboard");
+
+    }
+
+    protected async Task postData()
+    {
+        var res = await http.PostAsJsonAsync("api/Factures", facture);
+        await OnInitializedAsync();
+    }
+
+}

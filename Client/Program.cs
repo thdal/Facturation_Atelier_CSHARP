@@ -18,7 +18,8 @@ namespace Facturations.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
             //Singleton ou Scoped même chose
-            builder.Services.AddSingleton<IBusinessData>(sp => new BusinessData());
+            
+            //builder.Services.AddSingleton<IBusinessData>(sp => new BusinessData());
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             await builder.Build().RunAsync();
