@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Facturations.Server.Controllers
 {
@@ -48,10 +47,9 @@ namespace Facturations.Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                // TODO : Ajouter la nouvelle facture à la collection
                 newFacture.Created = DateTime.Now;
                 newFacture.Expected = newFacture.Created + TimeSpan.FromDays(30);               
-                _data.ajouterFacture(newFacture);
+                _data.AjouterFacture(newFacture);
                 return Created($"factures/{newFacture.NumeroFacture}", newFacture);
             }
             else

@@ -1,7 +1,6 @@
 ﻿using Facturations.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,8 +24,8 @@ namespace Facturations.Server.Controllers
         public Dictionary<string, string> Get()
         {
             return new Dictionary<string, string>() {
-                { "Montants réglés", _data.SalesRevenue.ToString() },
-                { "Montants dûs" , _data.Outstanding.ToString() } 
+                { "Montants réglés", _data.CAReel.ToString() },
+                { "Montants dûs" , _data.CAPrevisionnel.ToString() } 
                 };
         }       
     }

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Facturations.Shared
 {
+    //ATELIER 3
     public class BusinessData : IBusinessData
     {
         private Facture[] factures =
@@ -19,23 +17,20 @@ namespace Facturations.Shared
 
         public BusinessData()
         {
-            //factures[1].RegisterPayment(DateTime.Now, 12154.6m);
-            //factures[3].RegisterPayment(DateTime.Now, 16077.26m);
             factures[3].Expected = DateTime.Now;
         }
 
         public IEnumerable<Facture> AllFactures => factures;        
 
-        public void ajouterFacture(Facture facture)
+        public void AjouterFacture(Facture facture)
         {
             Array.Resize(ref factures, factures.Length + 1);
             this.factures[factures.Length -1] = facture;
         }
 
+        public decimal CAReel => factures.Sum(fact => fact.Paid);
 
-        public decimal SalesRevenue => factures.Sum(fact => fact.Paid);
-
-        public decimal Outstanding => factures.Sum(Fact => Fact.Amount - Fact.Paid );
+        public decimal CAPrevisionnel => factures.Sum(Fact => Fact.Amount - Fact.Paid );
 
     }
 }

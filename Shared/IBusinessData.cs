@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Facturations.Shared
 {
@@ -10,11 +6,11 @@ namespace Facturations.Shared
     {
         IEnumerable<Facture> AllFactures { get; }
 
-        void ajouterFacture(Facture facture);
+        void AjouterFacture(Facture facture);
 
-        decimal SalesRevenue { get; }
+        decimal CAReel { get; }
 
-        decimal Outstanding { get; }
+        decimal CAPrevisionnel { get; }
 
     }
 }

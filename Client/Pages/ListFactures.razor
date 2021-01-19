@@ -14,23 +14,25 @@ else
         <thead>
             <tr>
                 <th>Reference</th>
-                <th>Date</th>
-                <th>Customer</th>
-                <th>Amount</th>
-                <th>Paid</th>
+                <th>Date de création</th>
+                <th>Date butoire</th>
+                <th>Client</th>
+                <th>Montant</th>
+                <th>Payé</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var invoice in allFactures)
             {
-                <tr class='table-@ColorFromInvoiceState(invoice)'>
-                    <td>@invoice.NumeroFacture</td>
-                    <td>@invoice.Created.ToShortDateString()</td>
-                    <td>@invoice.Customer</td>
-                    <td align="right">@invoice.Amount.ToString("€ 0.00")</td>
-                    <td align="right">@invoice.Paid.ToString("€ 0.00")</td>
+            <tr class='table'>
+                <td>@invoice.NumeroFacture</td>
+                <td>@invoice.Created.ToShortDateString()</td> 
+                <td>@invoice.Expected.ToShortDateString()</td>
+                <td>@invoice.Customer</td>
+                <td align="right">@invoice.Amount.ToString("€ 0.00")</td>
+                <td align="right">@invoice.Paid.ToString("€ 0.00")</td>
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>
@@ -47,7 +49,7 @@ else
     <h2>Ajouter une facture :</h2>
     <br />
 
-    <EditForm Model="facture" OnValidSubmit="@postData">
+    <EditForm Model="facture" OnValidSubmit="@PostData">
         <ValidationSummary />
         <DataAnnotationsValidator />
         <label>
@@ -70,12 +72,7 @@ else
     </EditForm>
 
 }
-@code {
-
-    static string ColorFromInvoiceState(Facture invoice)
-    {
-        return "";
-    }
+@code {    
 
     private Facture facture = new Facture();
 
@@ -86,16 +83,20 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await GetData();
+    }
+
+    protected async Task PostData()
+    {
+        var res = await http.PostAsJsonAsync("api/Factures", facture);
+        await GetData();
+    }
+
+    private async Task GetData()
+    {
         allFactures = await http.GetFromJsonAsync<IEnumerable<Facture>>("api/Factures");
 
         allMontants = await http.GetFromJsonAsync<Dictionary<string, string>>("api/Dashboard");
-
-    }
-
-    protected async Task postData()
-    {
-        var res = await http.PostAsJsonAsync("api/Factures", facture);
-        await OnInitializedAsync();
     }
 
 }

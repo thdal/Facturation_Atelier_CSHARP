@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Facturations.Shared
 {
@@ -23,34 +19,15 @@ namespace Facturations.Shared
 
         }
 
-        [Required(ErrorMessage = "Invoice reference is required")]
+        [Required(ErrorMessage = "Le numéro de la facture est obligatoire")]
         public string NumeroFacture { get; set; }
-        [Required(ErrorMessage = "La reference client est attendu")]
+        [Required(ErrorMessage = "Le nom de client est obligatoire")]
         public string Customer { get; set; }
-        [Required(ErrorMessage = "Amount reference is required")]
+        [Required(ErrorMessage = "Le montant de la facture est obligatoire")]
         public decimal Amount { get; set; }
-        public decimal Paid { get; private set; } = 0m;
+        public decimal Paid { get; set; } //= 0m;
         public DateTime Created { get; set; }
         public DateTime Expected { get; set; }
-        public DateTime? LastPayment { get; private set; } = null;
-
-        public bool IsPaid => Paid == Amount;
-        public bool IsLate => Expected < DateTime.Now;
-
-        public void RegisterPayment(DateTime when, decimal howMany)
-        {
-            if (when < Created)
-            {
-                throw new ArgumentOutOfRangeException("Cannot pay before the invoice creation");
-            }
-            LastPayment = when;
-            if (Amount - Paid < howMany)
-            {
-                throw new ArgumentOutOfRangeException("Cannot pay over the due amount");
-            }
-            Paid += howMany;
-        }
-
 
     }
 }
